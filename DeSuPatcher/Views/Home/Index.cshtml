@@ -1,0 +1,199 @@
+﻿@using ElectronNET.API
+@model DeSuPatcher.Controllers.HomeController
+
+@{
+    ViewBag.Title = "Parcheador SMT Devil Survivor";
+    Electron.WindowManager.BrowserWindows.First().RemoveMenu();
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Devil Survivor en español</title>
+    <link rel="stylesheet" href="@Url.Content("~/css/bootstrap/bootstrap.min.css")" type="text/css" />
+    <link rel="stylesheet" href="@Url.Content("~/css/Style.css")" type="text/css" />
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet">
+    <script>
+        let $ = require('jquery');
+        let jQuery = require('jquery');
+        require('popper.js');
+        require('bootstrap');
+    </script>
+</head>
+<body>
+    <div class="container-fluid">
+        <a id="top"></a>
+        <div class="row">
+            <div class="col-9">
+                <nav class="navbar fixed-top navbar-light bg-light navbar-expand-lg">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    </button>
+                    <a class="navbar-brand" href="#top">
+                        <img id="logo" src="@Url.Content("~/img/desu_logo.png")"><span class="in-spanish">en español</span>
+                    </a>
+                </nav>
+            </div>
+        </div>
+        <div class="row patch-container">
+            <div class="patch-form">
+                <div class="col-12">
+                    <h2>Parchear ROM</h2>
+                    <input type="text" id="fileSelected" class="form-control" readonly />
+                    <button type="button" id="fileSearch" class="btn btn-light examine">Examinar...</button>
+                    <button type="button" id="patch" class="btn btn-light patch" disabled>Parchear</button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="instructions">
+                <p>1. <span class="red-letter">E</span>lige tu ROM pulsando en Examinar.</p>
+                <p>2. <span class="red-letter">A</span> continuación, pulsa en Parchear.</p>
+                <p>3. <span class="red-letter">S</span>i todo va bien, ya podrás jugar.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Info -->
+    <div class="modal fade" id="infoWindow" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="infoTitle"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <span id="infoText"></span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Success -->
+    <div class="modal fade" id="successWindow" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Parche aplicado correctamente.</h5>
+                    <button type="button" class="close" aria-label="Close" onclick="closeWindow()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <span>Se ha aplicado el parche, la rom está localizada en la misma carpeta que la original.</span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeWindow()">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal No internet -->
+    <div class="modal fade" id="internetWindow" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">No hay internet.</h5>
+                    <button type="button" class="close" aria-label="Close" onclick="noInternet()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <span>Es necesario una conexión a internet para aplicar el parche. Se cerrará el programa.</span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="noInternet()">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Progress -->
+    <div class="modal fade" id="progressWindow" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="progressTitle"></h5>
+                </div>
+                <div class="modal-body">
+                    <span class="text-center align-middle" id="progressText"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+    const { ipcRenderer } = require("electron");
+    $(document).ready(function() {
+
+        $.ajax({ url: "@Html.Raw(@Url.Action("CheckInternet", "Home"))" }).done(function(data) {
+            if (!data.check) {
+                $("#internetWindow").modal('show');
+            }
+        });
+
+        $("#fileSearch").click(function(evt) {
+            ipcRenderer.send("select-rom");
+        });
+        $("#patch").click(function() {
+            let url = "@Html.Raw(@Url.Action("PatchGame", "Home", new {file = "change"}))";
+            url = url.replace("change", $("#fileSelected").val());
+            $("#progressTitle").text("Aplicando parche.");
+            $("#progressText").text("Se está aplicando el parche...");
+            $("#progressWindow").modal('show');
+
+            $.ajax({ url: url }).done(function(data) {
+                $("#progressWindow").modal('hide');
+                if (data.check) {
+                    $("#successWindow").modal('show');
+                } else {
+                    $("#infoTitle").text("Error al parchear.");
+                    $("#infoText").text("La rom de Nintendo DS introducida no es correcta o se ha producido un error al parchear.");
+                    $("#infoWindow").modal('show');
+                }
+            });
+        });
+        ipcRenderer.on("select-rom-reply",
+            (sender, path) => {
+                if (`${path}` === "undefined")
+                    return;
+
+                $("#fileSelected").val(`${path}`);
+                let url = "@Html.Raw(@Url.Action("CheckGame", "Home", new {file = "change"}))";
+                url = url.replace("change", `${path}`);
+
+                $.ajax({ url: url }).done(function(data) {
+                    if (data.check) {
+                        $("#fileSelected").css('background-color', '#68f791');
+                        $("#patch").prop("disabled", false);
+                    } else {
+                        $("#fileSelected").css('background-color', '#f77168');
+                        $("#patch").prop("disabled", true);
+                        $("#infoTitle").text("Error verificando archivos.");
+                        $("#infoText").text("La rom de Nintendo DS introducida no es correcta.");
+                        $("#infoWindow").modal('show');
+                    }
+
+                });
+
+            });
+    });
+
+    function closeWindow() {
+        ipcRenderer.send("open-file");
+        $("body").addClass('fade-out');
+        setTimeout(() => { window.close(); }, 1000);
+    }
+
+    function noInternet() {
+        $("body").addClass('fade-out');
+        setTimeout(() => { window.close(); }, 1000);
+    }
+    </script>
+</body>
+</html>

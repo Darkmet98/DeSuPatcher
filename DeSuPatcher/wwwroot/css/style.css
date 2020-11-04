@@ -1,0 +1,304 @@
+body
+{
+    /*background-color: #bb1c1b;*/
+    background: url("../img/bg.png") fixed center no-repeat;
+    background-position-y: -20%;
+    background-size: 100%;
+    color: #fff;
+}
+
+body,
+html,
+video
+{
+    max-width: 1920px;
+    margin: 0 auto;
+    overflow-x: hidden;
+}
+
+.navbar-brand
+{
+    max-width: 400px;
+}
+
+#logo
+{
+    margin-top: 20%;
+    width: 400px;
+    height: auto;
+}
+
+.patch-container
+{
+    display: inline-block;
+    margin: 23% auto 0px auto;
+    width: 100%;
+    height: auto;
+}
+
+.instructions
+{
+    display: block;
+    position: relative;
+    width: 100%;
+    float: left;
+    left: 40%;
+    margin-top: 3%;
+    font-size: 1.2rem;
+}
+
+.patch-form
+{
+    width: 40%;
+    position: relative;
+    right: 40px;
+    height: auto;
+    margin: 0 auto;
+    display: block;
+    text-align: center;
+}
+
+.patch-form input
+{
+    font-size: 0.8rem;
+    border-radius: 1px;
+}
+
+.patch-form .examine,
+.patch-form .patch
+{
+    float: right;
+    margin: 5px 0 5px 5px;
+    border-radius: 0px;
+    padding: 3px 15px;
+}
+
+h2
+{
+    text-shadow: #F00 4px 5px 3px, #0FF -5px 1px 3px
+}
+
+h2,
+.nav-item,
+.in-spanish
+{
+    font-family: 'Cinzel', serif;
+}
+
+.in-spanish
+{
+    position: relative;
+    color: #fff;
+    right: 40%;
+    top: 100px;
+    text-shadow: 1px 1px 10px #000;
+}
+
+.navbar-brand
+{
+    display: inline;
+}
+
+.navbar
+{
+    max-height: 50px;
+    background-color: #bb1c1b !important;
+}
+
+.nav-item
+{
+    font-size: 1.1em;
+}
+
+.nav-item.active a
+{
+    color: #fff !important;
+}
+
+video
+{
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    width: 100%;
+    height: auto;
+    z-index: -3;
+    -ms-transform: translateX(-50%) translateY(-50%);
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.video-container
+{
+    position: relative;
+    margin: 0 auto;
+    z-index: 2;
+    margin-top: 20%;
+}
+
+.overlay
+{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-image: url("./res/img/trama.png");
+    background-repeat: no-repeat;
+    background-color: #bb1c1b;
+    opacity: 0.7;
+    z-index: -1;
+}
+
+#survive-title
+{
+    font-size: 7em;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    user-select: none;
+}
+
+.typed-cursor
+{
+    font-size: 7em;
+    opacity: 1;
+    animation: blink .7s infinite;
+    user-select: none;
+}
+
+p
+{
+    text-align: justify;
+}
+
+.first-section,
+.second-section,
+.fourth-section
+{
+    padding: 100px 0;
+}
+
+.first-section,
+.fourth-section
+{
+    background-color: #000;
+}
+
+.second-section
+{
+    padding-top: 5%;
+    background-color: #fff;
+    color: #000;
+}
+
+.gallery
+{
+    padding: 5%;
+}
+.white-bg
+{
+    padding-top: 5%;
+    background-color: #fff;
+}
+
+.third-section
+{
+    background-color: #bb1c1b;
+    color: #fff;
+}
+
+#nds-container
+{
+    position: relative;
+    max-width: 585px;
+    width: 585px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#nds-container img
+{
+    width: 100%;
+    height: auto;
+}
+
+#nds-console
+{
+    z-index: 1;
+    position: relative;
+}
+
+#top-screen
+{
+    width: 276px;
+    height: 206px;
+    /*background-color: #fff;*/
+    position: absolute;
+    top: 44px;
+    left: 154px;
+    z-index: 0;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#bottom-screen
+{
+    width: 276px;
+    height: 206px;
+    /*background-color: #fff;*/
+    position: absolute;
+    top: 352px;
+    left: 154px;
+    z-index: 0;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.fourth-section h2
+{
+    text-align: center;
+}
+
+.fourth-section h3
+{
+    text-decoration: underline;
+}
+
+.fourth-section
+{
+    padding-bottom: 200px;
+}
+
+.red-letter
+{
+    color: #bb1c1b;
+    font-weight: bold;
+}
+
+.footer
+{
+    background-color: #bb1c1b;
+    color: #fff;
+    padding: 25px 0 15px 0;
+    margin: 0 auto;
+}
+
+.footer p
+{
+    text-align: center;
+}
+
+@keyframes blink {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.modal-dialog {
+    color: black;
+}
