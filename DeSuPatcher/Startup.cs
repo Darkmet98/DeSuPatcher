@@ -46,10 +46,12 @@ namespace DeSuPatcher
         {
             var browserWindow = await ElectronNET.API.Electron.WindowManager.CreateWindowAsync(new BrowserWindowOptions
             {
-                Width = 1500,
-                Height = 800,
+                Width = 1260,
+                Height = 700,
                 Show = false,
-                //Icon = "icon.ico" 
+                MinWidth = 1260,
+                MinHeight = 700,
+                //Icon = "/icon.ico"
             });
 
             browserWindow.OnReadyToShow += () => browserWindow.Show();

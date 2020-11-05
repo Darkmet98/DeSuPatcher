@@ -5,12 +5,13 @@
   },
   "name": "DeSuPatcher",
   "author": "",
-  "singleInstance": false,
+  "singleInstance": true,
   "environment": "Production",
   "build": {
     "appId": "com.DeSuPatcher.app",
     "productName": "DeSuPatcher",
     "copyright": "Copyright © 2020",
+	"icon": "../../../icon.ico",
     "buildVersion": "1.0.0",
     "compression": "maximum",
     "directories": {
